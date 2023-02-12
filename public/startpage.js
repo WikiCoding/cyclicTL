@@ -11,7 +11,7 @@
 //   //add condition for expired/invalid cookie
 // })
 
-const url = 'http://localhost:3000'
+const url = 'https://ill-pink-mite-veil.cyclic.app'
 
 const startPage = async () => {
   let result = await fetch(`${url}/`, {
