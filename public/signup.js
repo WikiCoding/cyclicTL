@@ -21,7 +21,7 @@ signup.addEventListener('click', async (e) => {
   jsonBody.password = passInput.value;
   //jsonBody.tokens = [{ token: '' }];
   console.log(jsonBody);
-  let result = await fetch(`http://localhost:3000/signup`, {
+  let result = await fetch(`https://ill-pink-mite-veil.cyclic.app/signup`, {
     method: 'POST',
     headers: { "content-type": "application/json" },
     body: JSON.stringify(jsonBody)
