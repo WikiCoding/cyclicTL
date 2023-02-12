@@ -12,7 +12,8 @@ chk.addEventListener('click', () => {
 });
 
 
-const url = 'https://ill-pink-mite-veil.cyclic.app/'
+//const url = 'https://ill-pink-mite-veil.cyclic.app/'
+const url = 'https://cyclictl.cyclic.app/'
 
 login.addEventListener('click', async (e) => {
   e.preventDefault();
