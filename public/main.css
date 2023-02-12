@@ -49,7 +49,7 @@ button {
 body {
   background: var(--light);
   color: var(--dark);
-  min-width: 800px;
+  min-width: 400px;
 }
 
 section {
