@@ -12,6 +12,7 @@
 // })
 
 const url = 'https://cyclictl.cyclic.app';
+//const url = 'https://ill-pink-mite-veil.cyclic.app/'
 
 const startPage = async () => {
   let result = await fetch(`${url}/`, {
