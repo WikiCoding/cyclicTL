@@ -1,4 +1,4 @@
-const url = 'http://localhost:3000'
+const url = 'https://ill-pink-mite-veil.cyclic.app'
 const logout = document.querySelector('.logout');
 const sortCategory = document.getElementById('order-category');
 const sortDate = document.getElementById('sort-recent');
