@@ -28,17 +28,9 @@ app.get('/todos', auth, async (req, res) => {
 
 })
 
-app.get('/login', async (req, res) => {
+app.get('/login', (req, res) => {
   try {
-    const token = req.cookies['auth_token'];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET, {
-      expiresIn: '1days'
-    });
-    const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
-
-    if (user) {
-      res.redirect('todos')
-    }
+    res.sendFile(`${publicPath}/login.html`)
   } catch (e) {
     res.sendFile(`${publicPath}/login.html`)
   }
@@ -48,18 +40,17 @@ app.get('/signup', (req, res) => {
   res.sendFile(`${publicPath}/signup.html`)
 });
 
-app.get('/loggedUser', auth, (req, res) => {
-  res.status(200).send(req.user)
+app.get('/loggedUser', auth, async (req, res) => {
+  try {
+    res.status(200).send(req.user)
+  } catch (e) {
+    res.status(500).send({ message: 'not logged' })
+  }
 })
 
 //////////////////////////////////////////////////////
 
 app.post('/login', async (req, res) => {
-  // getting the email, pw and login request from the client at req.body
-  // connect to the db and find the corresponding user (if any), done with findByCredentials created function
-  // if found, generate a fresh token
-  // save the token to the cookies to be used later at all private operations that require auth
-  // finally send status 200 or sendFile Dashboard.html...
   try {
     const user = await User.findByCredentials(req.body.username, req.body.password);
     const token = await user.generateAuthToken();
@@ -132,6 +123,16 @@ app.delete('/delete-task/:id', auth, async (req, res) => {
   try {
     const deleteTask = await Task.findOneAndDelete({ _id: req.params.id });
     res.status(200).send(deleteTask)
+  } catch (e) {
+    res.status(404).send()
+  }
+})
+
+app.delete('/delete-user/:id', auth, async (req, res) => {
+  try {
+    const deleteUser = await User.findOneAndDelete({ _id: req.params.id });
+    await deleteUser.remove();
+    res.status(200).send(deleteUser)
   } catch (e) {
     res.status(404).send()
   }
