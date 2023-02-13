@@ -1,4 +1,5 @@
-const url = 'http://localhost:3000'
+//const url = 'https://ill-pink-mite-veil.cyclic.app'
+const url = 'https://cyclictl.cyclic.app'
 
 const userLoggedIn = async () => {
   const token = document.cookie.replace('auth_token=', '');
