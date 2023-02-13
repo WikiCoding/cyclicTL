@@ -1,47 +1,19 @@
-// window.addEventListener('load', (e) => {
-//   e.preventDefault();
+const url = 'http://localhost:3000'
 
-//   const cookie = document.cookie;
-//   if (cookie) {
-//     location.href = '/todos';
-//   }
-//   else {
-//     location.href = '/';
-//   }
-//   //add condition for expired/invalid cookie
-// })
-
-const url = 'https://cyclictl.cyclic.app';
-//const url = 'https://ill-pink-mite-veil.cyclic.app/'
-
-const startPage = async () => {
-  let result = await fetch(`${url}/`, {
+const userLoggedIn = async () => {
+  const token = document.cookie.replace('auth_token=', '');
+  const fetchUser = await fetch(`${url}/loggedUser`, {
     method: 'GET'
   })
+  const loggedIn = await fetchUser.json();
 
-  const data = await result.json();
-  console.log(data);
-  if (data) {
+  if (loggedIn.tokens[0].token === token) {
     location.href = '/todos';
   } else {
-    alert(data.message)
-    location.href = '/';
+    alert('Could not login automatically.')
   }
 }
 
-const checkLoggedIn = async () => {
-  let result = await fetch(`${url}/todos`, {
-    method: 'GET'
-  })
-
-  const data = await result.json();
-  console.log(data);
-  if (data.message !== 'No user') {
-    location.href = '/todos';
-  } else {
-    alert(data.message)
-    location.href = '/';
-  }
+if (document.cookie) {
+  userLoggedIn();
 }
-
-//checkLoggedIn();
