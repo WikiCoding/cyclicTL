@@ -25,7 +25,9 @@
   /* this is related with everything */
 }
 
-.logout {
+.logout,
+.del-user {
+  margin-right: 50px;
   border: none;
   padding: 10px;
   border-radius: 8px;
