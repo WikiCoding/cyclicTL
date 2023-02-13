@@ -1,3 +1,6 @@
+//const url = 'https://ill-pink-mite-veil.cyclic.app'
+const url = 'https://cyclictl.cyclic.app'
+
 const login = document.querySelector('.login-btn');
 const usernameInput = document.querySelector('.usernameClass');
 const passInput = document.querySelector('.passwordClass');
@@ -11,10 +14,6 @@ chk.addEventListener('click', () => {
   }
 });
 
-
-//const url = 'https://ill-pink-mite-veil.cyclic.app/'
-const url = 'https://cyclictl.cyclic.app/'
-
 login.addEventListener('click', async (e) => {
   e.preventDefault();
   const jsonBody = {};
@@ -22,7 +21,7 @@ login.addEventListener('click', async (e) => {
   jsonBody.password = passInput.value;
 
   try {
-    let result = await fetch(`${url}login`, {
+    let result = await fetch(`${url}/login`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(jsonBody)
