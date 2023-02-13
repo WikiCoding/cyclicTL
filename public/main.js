@@ -3,6 +3,22 @@ const url = 'https://cyclictl.cyclic.app';
 const logout = document.querySelector('.logout');
 const sortCategory = document.getElementById('order-category');
 const sortDate = document.getElementById('sort-recent');
+const delUser = document.querySelector('.del-user')
+
+delUser.addEventListener('click', async () => {
+	const getUser = await fetch(`${url}/tasks`, {
+		method: 'GET'
+	});
+
+	const user = await getUser.json();
+
+	await fetch(`${url}/delete-user/${user[0].owner}`, {
+		method: 'DELETE'
+	});
+
+	alert('Sorry to see you go! You account was successfuly deleted.');
+	location.href = '/';
+})
 
 sortCategory.addEventListener('click', async () => {
 	let res = await fetch(`${url}/tasks`, {
