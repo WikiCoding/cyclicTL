@@ -148,7 +148,8 @@ const renderTasks = (todos) => {
 				//console.log(completed.message);
 			}
 
-			getTasks();
+			renderTasks(todos)
+			//getTasks();
 
 		})
 
