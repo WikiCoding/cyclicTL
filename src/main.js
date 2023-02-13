@@ -8,6 +8,7 @@ const path = require('path');
 const publicPath = path.join(__dirname, '../public');
 const viewsPath = path.join(__dirname, '../public/views');
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 app.use(express.json());
 app.use(express.static(publicPath));
@@ -15,29 +16,30 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 //render html to the browser
-app.get('/', (req, res) => {
-  if (req.user) {
-    res.status(200).send(req.user);
-  }
-  else {
-    res.status(200).send();
-  }
-})
 
 app.get('/todos', auth, async (req, res) => {
-  if (req.user !== 'No user') {
-    res.sendFile(`${publicPath}/todos.html`)
-  } else {
-    //res.send({ message: 'Please login or signup!' })
-    res.sendFile(`${publicPath}/`)
+  try {
+    if (req.user) {
+      res.sendFile(`${publicPath}/todos.html`)
+    }
+  } catch (e) {
+    res.send({ message: 'Problem with your request' })
   }
+
 })
 
-app.get('/login', (req, res) => {
-  const token = req.cookies['auth_token'];
-  if (token) {
-    res.sendFile(`${publicPath}/todos.html`)
-  } else {
+app.get('/login', async (req, res) => {
+  try {
+    const token = req.cookies['auth_token'];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+      expiresIn: '1days'
+    });
+    const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+
+    if (user) {
+      res.redirect('todos')
+    }
+  } catch (e) {
     res.sendFile(`${publicPath}/login.html`)
   }
 });
