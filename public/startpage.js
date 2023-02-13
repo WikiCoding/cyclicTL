@@ -9,8 +9,6 @@ const userLoggedIn = async () => {
 
   if (loggedIn.tokens[0].token === token) {
     location.href = '/todos';
-  } else {
-    alert('Could not login automatically.')
   }
 }
 
