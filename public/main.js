@@ -40,7 +40,7 @@ sortDate.addEventListener('click', async () => {
 
 	const todos = await res.json();
 
-	todos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+	todos.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
 	renderTasks(todos);
 })
@@ -61,8 +61,6 @@ logout.addEventListener('click', Logout);
 const renderTasks = (todos) => {
 	const todoList = document.querySelector('#todo-list');
 	todoList.innerHTML = "";
-
-	//todos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
 	todos.sort((a, b) => a.completed - b.completed);
 
@@ -113,11 +111,9 @@ const renderTasks = (todos) => {
 
 		input.addEventListener('change', async (e) => {
 			todo.completed = e.target.checked;
-			//localStorage.setItem('todos', JSON.stringify(todos));
 
 			if (todo.completed) {
 				todoItem.classList.add('done');
-				//console.log(todo._id);
 				const res = await fetch(`${url}/update-task`, {
 					method: 'PATCH',
 					headers: { 'content-type': 'application/json' },
@@ -129,7 +125,6 @@ const renderTasks = (todos) => {
 				})
 
 				const completed = await res.json();
-				//console.log(completed.message);
 
 			} else {
 				todoItem.classList.remove('done');
@@ -145,11 +140,9 @@ const renderTasks = (todos) => {
 				})
 
 				const completed = await res.json();
-				//console.log(completed.message);
 			}
 
 			renderTasks(todos)
-			//getTasks();
 
 		})
 
@@ -176,11 +169,9 @@ const renderTasks = (todos) => {
 					})
 				})
 				const updated = await res.json();
-				//console.log(updated.message);
 
 				getTasks();
-				//localStorage.setItem('todos', JSON.stringify(todos));
-				//DisplayTodos()
+
 			})
 
 			input.focus();
@@ -193,7 +184,6 @@ const renderTasks = (todos) => {
 			})
 
 			const deleted = await delRequest.json();
-			//console.log(`Deleted task: ${deleted.description}`);
 
 			await getTasks();
 		})
@@ -207,6 +197,7 @@ const getTasks = async () => {
 
 	const todos = await res.json();
 
+	todos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 	renderTasks(todos);
 }
 
@@ -295,7 +286,7 @@ speakBtn.addEventListener('click', async (e) => {
 
 	const recognition = new SpeechRecognition();
 	recognition.interimResults = false;
-	recognition.lang = 'pt-Br'
+	recognition.lang = 'pt-PT'
 	//recognition.lang = 'en-Us'
 
 	recognition.addEventListener('result', async (e) => {
