@@ -23,15 +23,19 @@ signup.addEventListener('click', async (e) => {
 
   jsonBody.password = passInput.value;
 
-  let result = await fetch(`${url}/signup`, {
+  const result = await fetch(`${url}/signup`, {
     method: 'POST',
     headers: { "content-type": "application/json" },
     body: JSON.stringify(jsonBody)
   });
   const data = await result.json();
 
-  if (data !== undefined) {
+  if (data.message) {
+    alert(data.message)
+    return
+  } else {
     alert('User succesfully created!')
+    location.href = '/todos';
   }
-  location.href = '/todos';
+
 })
