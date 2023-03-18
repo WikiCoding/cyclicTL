@@ -18,6 +18,7 @@ delUser.addEventListener('click', async () => {
 
 	alert('Sorry to see you go! You account was successfuly deleted.');
 	location.href = '/';
+	//window.history.pushState({}, '', '/todos') would redirect me on the link to the todos page without reload!
 })
 
 sortCategory.addEventListener('click', async () => {
@@ -126,6 +127,8 @@ const renderTasks = (todos) => {
 
 				const completed = await res.json();
 
+				getTasks()
+
 			} else {
 				todoItem.classList.remove('done');
 
@@ -140,10 +143,9 @@ const renderTasks = (todos) => {
 				})
 
 				const completed = await res.json();
+
+				getTasks()
 			}
-
-			renderTasks(todos)
-
 		})
 
 		edit.addEventListener('click', (e) => {
@@ -197,11 +199,15 @@ const getTasks = async () => {
 
 	const todos = await res.json();
 
+	const totalUserTasks = todos.length;
+	const completedTasks = todos.filter(todo => todo.completed === true).length;
+
+	let remaining = document.getElementById('remaining');
+	remaining.innerHTML = "You have " + `${completedTasks}` + " done tasks out of a total of " + `${totalUserTasks}` + "!";
+
 	todos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 	renderTasks(todos);
 }
-
-getTasks();
 
 const newTodoForm = document.querySelector('#new-todo-form');
 const addBtn = document.querySelector('#add-btn');
