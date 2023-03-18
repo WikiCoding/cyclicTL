@@ -9,6 +9,7 @@ const publicPath = path.join(__dirname, '../public');
 const viewsPath = path.join(__dirname, '../public/views');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+const { findOne } = require('./models/taskModel');
 
 app.use(express.json());
 app.use(express.static(publicPath));
@@ -28,7 +29,7 @@ app.get('/todos', auth, async (req, res) => {
 
 })
 
-app.get('/login', (req, res) => {
+app.get('/login', async (req, res) => {
   try {
     res.sendFile(`${publicPath}/login.html`)
   } catch (e) {
@@ -51,10 +52,15 @@ app.get('/loggedUser', auth, async (req, res) => {
 //////////////////////////////////////////////////////
 
 app.post('/login', async (req, res) => {
+  // getting the email, pw and login request from the client at req.body
+  // connect to the db and find the corresponding user (if any), done with findByCredentials created function
+  // if found, generate a fresh token
+  // save the token to the cookies to be used later at all private operations that require auth
+  // finally send status 200 or sendFile Dashboard.html...
   try {
     const user = await User.findByCredentials(req.body.username, req.body.password);
     const token = await user.generateAuthToken();
-    //console.log(token);
+
     res.cookie('auth_token', token);
     res.status(200).send({
       message: 'Ok',
@@ -66,6 +72,12 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
+  const validateUniqueUsername = await User.find({ username: req.body.username })
+
+  if (validateUniqueUsername.length > 0) {
+    return res.status(400).send({ message: 'Username is already in use!' });
+  }
+
   const user = new User(req.body);
   const token = await user.generateAuthToken();
 
