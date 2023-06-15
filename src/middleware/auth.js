@@ -3,8 +3,12 @@ const User = require('../models/userModel');
 
 const auth = async (req, res, next) => {
   try {
-    const token = req.cookies['auth_token']; //bringing the token in the frontend from the cookies
-    //const token = req.header('Authorization').replace('Bearer ', '');
+    let token = null
+    if (req.cookies) {
+      token = req.cookies['auth_token']; //bringing the token in the frontend from the cookies
+    } else {
+      token = req.header('Authorization').replace('Bearer ', '');
+    }
     const decoded = jwt.verify(token, process.env.JWT_SECRET, {
       expiresIn: '1days'
     });
