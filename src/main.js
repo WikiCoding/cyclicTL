@@ -64,7 +64,8 @@ app.post('/login', async (req, res) => {
     res.cookie('auth_token', token);
     res.status(200).send({
       message: 'Ok',
-      id: user._id.toString()
+      id: user._id.toString(),
+      token
     });
   } catch (e) {
     res.status(400).send();
